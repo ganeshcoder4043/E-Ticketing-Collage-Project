@@ -10,7 +10,8 @@ import java.util.Properties;
 
 /**
  * Database Connection Utility using standard JDBC DriverManager.
- * Reads connection settings dynamically from db.properties in the classpath.
+ * Reads connection settings dynamically from environment variables (Render)
+ * or db.properties (Local).
  */
 public class DBConnection {
 
@@ -24,6 +25,27 @@ public class DBConnection {
     }
 
     private static void loadProperties() {
+        // ✅ FIRST: Check Environment Variables (Render)
+        String envUrl = System.getenv("DB_URL");
+        String envUsername = System.getenv("DB_USERNAME");
+        String envPassword = System.getenv("DB_PASSWORD");
+
+        if (envUrl != null && envUsername != null && envPassword != null) {
+            // Use Render environment variables
+            url = envUrl;
+            username = envUsername;
+            password = envPassword;
+            driver = "com.mysql.cj.jdbc.Driver";
+            System.out.println("✅ Using Render environment variables for database connection");
+            try {
+                Class.forName(driver);
+            } catch (ClassNotFoundException e) {
+                System.err.println("[DBConnection] JDBC Driver not found: " + e.getMessage());
+            }
+            return;
+        }
+
+        // Fallback: Load from db.properties (Local)
         Properties props = new Properties();
         try (InputStream in = DBConnection.class.getClassLoader().getResourceAsStream("db.properties")) {
             if (in != null) {
@@ -32,12 +54,14 @@ public class DBConnection {
                 url = props.getProperty("db.url", "jdbc:mysql://localhost:3306/bharatdarshan_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
                 username = props.getProperty("db.username", "root");
                 password = props.getProperty("db.password", "root");
+                System.out.println("✅ Using local db.properties for database connection");
             } else {
                 // Fallback defaults
                 driver = "com.mysql.cj.jdbc.Driver";
                 url = "jdbc:mysql://localhost:3306/bharatdarshan_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
                 username = "root";
                 password = "root";
+                System.out.println("⚠️ Using default database configuration");
             }
             Class.forName(driver);
         } catch (Exception e) {
