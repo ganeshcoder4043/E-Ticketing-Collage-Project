@@ -303,35 +303,77 @@ http://localhost:8080/BharatDarshan
 ## 8. Project Structure
 
 ```text
-BharatDarshan
-│
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   ├── model
-│   │   │   ├── dao
-│   │   │   ├── servlet
-│   │   │   └── util
-│   │   │
-│   │   ├── resources
-│   │   │   └── db.properties
-│   │   │
-│   │   └── webapp
-│   │       ├── css
-│   │       ├── images
-│   │       ├── js
-│   │       ├── WEB-INF
-│   │       └── jsp
-│
-├── sql
-│   └── schema.sql
-│
-├── pom.xml
-│
-├── README.md
-│
-└── target
-    └── BharatDarshan.war
+BharatDarshan(E-TICKETING FOR TOURISM SYSTEM)/
+├── pom.xml                                  # Maven project configuration
+├── README.md                                # Project documentation
+├── sql/
+│   └── schema.sql                           # MySQL DDL script + seed data
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/
+│       │       └── bharatdarshan/
+│       │           ├── model/               # Model (POJO) Layer
+│       │           │   ├── User.java
+│       │           │   ├── LoginDetails.java
+│       │           │   ├── Monument.java
+│       │           │   ├── TourBooking.java
+│       │           │   ├── PaymentMode.java
+│       │           │   ├── PaymentDetails.java
+│       │           │   └── BookingCancellation.java
+│       │           ├── dao/                 # Data Access Object Layer
+│       │           │   ├── UserDAO.java
+│       │           │   ├── MonumentDAO.java
+│       │           │   ├── BookingDAO.java
+│       │           │   ├── PaymentDAO.java
+│       │           │   └── CancellationDAO.java
+│       │           ├── servlet/             # Controller (Servlet) Layer
+│       │           │   ├── HomeServlet.java
+│       │           │   ├── MonumentServlet.java
+│       │           │   ├── AuthServlet.java
+│       │           │   ├── BookTicketServlet.java
+│       │           │   ├── PaymentServlet.java
+│       │           │   ├── TicketServlet.java
+│       │           │   ├── MyBookingsServlet.java
+│       │           │   ├── CancelBookingServlet.java
+│       │           │   ├── ProfileServlet.java
+│       │           │   └── AdminServlet.java
+│       │           └── util/                # Utilities & Security Filters
+│       │               ├── DBConnection.java
+│       │               └── AuthFilter.java
+│       ├── resources/
+│       │   └── db.properties                # Database connection credentials
+│       └── webapp/
+│           ├── WEB-INF/
+│           │   ├── web.xml                  # Deployment descriptor
+│           │   └── views/                   # JSP Views
+│           │       ├── common/
+│           │       │   ├── header.jsp
+│           │       │   └── footer.jsp
+│           │       ├── home.jsp
+│           │       ├── monuments.jsp
+│           │       ├── monument-detail.jsp
+│           │       ├── login.jsp
+│           │       ├── register.jsp
+│           │       ├── book-ticket.jsp
+│           │       ├── payment.jsp
+│           │       ├── booking-confirmation.jsp
+│           │       ├── e-ticket.jsp
+│           │       ├── my-bookings.jsp
+│           │       ├── cancel-booking.jsp
+│           │       ├── profile.jsp
+│           │       ├── admin-dashboard.jsp
+│           │       ├── admin-user-details.jsp
+│           │       ├── admin-send-email.jsp
+│           │       ├── service.jsp
+│           │       ├── about.jsp
+│           │       └── contact.jsp
+│           └── static/
+│               ├── css/
+│               │   └── style.css            # Pure CSS styles
+│               └── images/                  # Monument images
+└── target/
+    └── BharatDarshan.war                    # Compiled WAR file
 ```
 
 ---
