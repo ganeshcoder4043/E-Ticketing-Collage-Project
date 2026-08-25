@@ -1,7 +1,7 @@
 # Dockerfile for BharatDarshan - Java/JSP Project
 
-# 1. Base image - Java 17 (Eclipse Temurin - Official OpenJDK build)
-FROM eclipse-temurin:17-jdk-alpine
+# 1. Base image - Java 21 (Eclipse Temurin)
+FROM eclipse-temurin:21-jdk-alpine
 
 # 2. Working directory set karein
 WORKDIR /app
