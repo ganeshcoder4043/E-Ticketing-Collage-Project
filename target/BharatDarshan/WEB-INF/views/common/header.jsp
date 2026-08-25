@@ -40,39 +40,49 @@
             </a>
 
             <!-- Navigation Links -->
-            <ul class="nav-menu">
-                <li>
-                    <a href="${pageContext.request.contextPath}/home" class="nav-link ${activePage == 'home' ? 'active' : ''}">Home</a>
-                </li>
-                <li>
-                    <a href="${pageContext.request.contextPath}/monuments" class="nav-link ${activePage == 'monuments' ? 'active' : ''}">Monuments</a>
-                </li>
-                
-                <c:choose>
-                    <c:when test="${not empty sessionScope.user}">
-                        <li>
-                            <a href="${pageContext.request.contextPath}/my-bookings" class="nav-link ${activePage == 'bookings' ? 'active' : ''}">My Bookings</a>
-                        </li>
-                        <li>
-                            <div class="user-badge">
-                                <span class="user-avatar">${sessionScope.user.firstName.substring(0,1)}</span>
-                                <span style="font-size: 0.88rem; font-weight: 600; color: #f8fafc;">${sessionScope.user.firstName}</span>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/logout" class="btn-nav-outline" style="font-size: 0.85rem;">Logout</a>
-                        </li>
-                    </c:when>
-                    <c:otherwise>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/login" class="nav-link ${activePage == 'login' ? 'active' : ''}">Login</a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/register" class="btn-nav-primary">Register</a>
-                        </li>
-                    </c:otherwise>
-                </c:choose>
-            </ul>
+           <ul class="nav-menu">
+               <li>
+                   <a href="${pageContext.request.contextPath}/home" class="nav-link ${activePage == 'home' ? 'active' : ''}">Home</a>
+               </li>
+               <li>
+                   <a href="${pageContext.request.contextPath}/monuments" class="nav-link ${activePage == 'monuments' ? 'active' : ''}">Monuments</a>
+               </li>
+               <li>
+                   <a href="${pageContext.request.contextPath}/service" class="nav-link ${activePage == 'service' ? 'active' : ''}">Services</a>
+               </li>
+               <li>
+                   <a href="${pageContext.request.contextPath}/about" class="nav-link ${activePage == 'about' ? 'active' : ''}">About</a>
+               </li>
+               <li>
+                   <a href="${pageContext.request.contextPath}/contact" class="nav-link ${activePage == 'contact' ? 'active' : ''}">Contact</a>
+               </li>
+
+               <c:choose>
+                   <c:when test="${not empty sessionScope.user}">
+                       <li>
+                           <a href="${pageContext.request.contextPath}/my-bookings" class="nav-link ${activePage == 'bookings' ? 'active' : ''}">My Bookings</a>
+                       </li>
+                       <li>
+                           <div class="user-badge" onclick="window.location.href='${pageContext.request.contextPath}/profile'" style="cursor:pointer;">
+                               <span class="user-avatar">${sessionScope.user.firstName.substring(0,1)}</span>
+                               <span style="font-size: 0.88rem; font-weight: 600; color: #f8fafc;">${sessionScope.user.firstName}</span>
+                               <span style="font-size: 10px; color: #93c5fd; margin-left: 4px;">▼</span>
+                           </div>
+                       </li>
+                       <li>
+                           <a href="${pageContext.request.contextPath}/logout" class="btn-nav-outline" style="font-size: 0.85rem;">Logout</a>
+                       </li>
+                   </c:when>
+                   <c:otherwise>
+                       <li>
+                           <a href="${pageContext.request.contextPath}/login" class="nav-link ${activePage == 'login' ? 'active' : ''}">Login</a>
+                       </li>
+                       <li>
+                           <a href="${pageContext.request.contextPath}/register" class="btn-nav-primary">Register</a>
+                       </li>
+                   </c:otherwise>
+               </c:choose>
+           </ul>
         </div>
     </nav>
 
@@ -85,7 +95,7 @@
             </div>
             <% session.removeAttribute("flashSuccess"); %>
         </c:if>
-        
+
         <c:if test="${not empty sessionScope.flashError}">
             <div class="alert alert-error">
                 <span>&#9888;</span>
