@@ -227,4 +227,30 @@ public class MonumentDAO {
         }
         return types;
     }
+
+    // MonumentDAO.java mein yeh method add karein
+
+    /**
+     * Get total monument count (for admin dashboard)
+     */
+    public int getMonumentCount() {
+        String sql = "SELECT COUNT(*) FROM monument";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[MonumentDAO] Error getting monument count: " + e.getMessage());
+        } finally {
+            DBConnection.close(rs, ps, conn);
+        }
+        return 0;
+    }
 }

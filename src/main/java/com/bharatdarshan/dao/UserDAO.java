@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Data Access Object for User and LoginDetails operations.
@@ -287,5 +289,132 @@ public class UserDAO {
             DBConnection.close(rs, ps, conn);
         }
         return null;
+    }
+
+    // ✅ Add these methods to UserDAO.java
+
+    /**
+     * Get all users (for admin panel)
+     */
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM `user` ORDER BY id DESC";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                User user = mapResultSetToUser(rs);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.err.println("[UserDAO] Error fetching all users: " + e.getMessage());
+        } finally {
+            DBConnection.close(rs, ps, conn);
+        }
+        return users;
+    }
+
+    /**
+     * Search users by name or email
+     */
+    public List<User> searchUsers(String keyword) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM `user` WHERE LOWER(first_name) LIKE ? OR LOWER(last_name) LIKE ? OR LOWER(email) LIKE ? ORDER BY id DESC";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            String searchTerm = "%" + keyword.toLowerCase() + "%";
+            ps.setString(1, searchTerm);
+            ps.setString(2, searchTerm);
+            ps.setString(3, searchTerm);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                users.add(mapResultSetToUser(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("[UserDAO] Error searching users: " + e.getMessage());
+        } finally {
+            DBConnection.close(rs, ps, conn);
+        }
+        return users;
+    }
+
+    /**
+     * Get user count
+     */
+    public int getUserCount() {
+        String sql = "SELECT COUNT(*) FROM `user`";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[UserDAO] Error getting user count: " + e.getMessage());
+        } finally {
+            DBConnection.close(rs, ps, conn);
+        }
+        return 0;
+    }
+
+    /**
+     * Update user role (admin/user)
+     */
+    public boolean updateUserRole(int userId, String role) {
+        String sql = "UPDATE `user` SET role = ? WHERE id = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, role);
+            ps.setInt(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[UserDAO] Error updating user role: " + e.getMessage());
+            return false;
+        } finally {
+            DBConnection.close(ps, conn);
+        }
+    }
+
+    /**
+     * Map ResultSet to User object
+     */
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setGender(rs.getString("gender"));
+        user.setEmail(rs.getString("email"));
+        user.setContact(rs.getLong("contact"));
+        user.setDob(rs.getDate("dob"));
+        user.setCreatedAt(rs.getTimestamp("created_at"));
+
+        // ✅ Add role mapping
+        try {
+            user.setRole(rs.getString("role"));
+        } catch (SQLException e) {
+            user.setRole("user"); // default if column doesn't exist
+        }
+
+        return user;
     }
 }

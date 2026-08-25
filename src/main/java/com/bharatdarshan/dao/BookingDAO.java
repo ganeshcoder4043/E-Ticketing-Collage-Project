@@ -222,4 +222,30 @@ public class BookingDAO {
         booking.setBookingDate(rs.getTimestamp("booking_date"));
         return booking;
     }
+
+    // BookingDAO.java mein yeh method add karein
+
+    /**
+     * Get total booking count (for admin dashboard)
+     */
+    public int getBookingCount() {
+        String sql = "SELECT COUNT(*) FROM tour_booking";
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("[BookingDAO] Error getting booking count: " + e.getMessage());
+        } finally {
+            DBConnection.close(rs, ps, conn);
+        }
+        return 0;
+    }
 }

@@ -4,10 +4,6 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- * Model class representing a User entity.
- * Corresponds to table `user`.
- */
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -19,9 +15,10 @@ public class User implements Serializable {
     private long contact;
     private Date dob;
     private Timestamp createdAt;
+    private String role;  // ✅ Add this field
 
-    public User() {
-    }
+    // Constructors
+    public User() {}
 
     public User(int id, String firstName, String lastName, String gender, String email, long contact, Date dob) {
         this.id = id;
@@ -42,72 +39,40 @@ public class User implements Serializable {
         this.dob = dob;
     }
 
-    public int getId() {
-        return id;
-    }
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public String getFullName() {
         return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
     }
 
-    public String getGender() {
-        return gender;
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getEmail() {
-        return email;
-    }
+    public long getContact() { return contact; }
+    public void setContact(long contact) { this.contact = contact; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public Date getDob() { return dob; }
+    public void setDob(Date dob) { this.dob = dob; }
 
-    public long getContact() {
-        return contact;
-    }
+    public Timestamp getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
-    public void setContact(long contact) {
-        this.contact = contact;
-    }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
+    public boolean isAdmin() {
+        return role != null && role.equalsIgnoreCase("admin");
     }
 
     @Override
@@ -116,10 +81,8 @@ public class User implements Serializable {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
-                ", contact=" + contact +
-                ", dob=" + dob +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
