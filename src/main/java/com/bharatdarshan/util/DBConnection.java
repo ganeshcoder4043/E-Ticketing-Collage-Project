@@ -31,17 +31,11 @@ public class DBConnection {
         String envPassword = System.getenv("DB_PASSWORD");
 
         if (envUrl != null && envUsername != null && envPassword != null) {
-            // Use Render environment variables
             url = envUrl;
             username = envUsername;
             password = envPassword;
             driver = "com.mysql.cj.jdbc.Driver";
             System.out.println("✅ Using Render environment variables for database connection");
-            try {
-                Class.forName(driver);
-            } catch (ClassNotFoundException e) {
-                System.err.println("[DBConnection] JDBC Driver not found: " + e.getMessage());
-            }
             return;
         }
 
