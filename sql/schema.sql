@@ -3,11 +3,11 @@
 -- Database Schema (MySQL) & Seed Data
 -- ====================================================================
 
-CREATE DATABASE IF NOT EXISTS `bharatdarshan_db` 
+CREATE DATABASE IF NOT EXISTS `railway` 
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
 
-USE `bharatdarshan_db`;
+USE `railway`;
 
 -- Drop existing tables in reverse foreign key order
 DROP TABLE IF EXISTS `booking_cancellation`;
